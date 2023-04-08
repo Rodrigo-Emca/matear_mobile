@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "mateAr",
-    "slug": "mateAr",
+    "name": "mateAr-app",
+    "slug": "mateAr-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
