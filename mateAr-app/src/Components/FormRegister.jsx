@@ -43,6 +43,9 @@ export default function FormRegister() {
       );
     } catch (error) {
         console.log(error)
+        Alert.alert(
+          'Ups',
+        );
         setLoading(false);
     }
 }
@@ -83,14 +86,14 @@ export default function FormRegister() {
       <View style={styles.fieldset}>
         <Text style={styles.legend}>Address</Text>
         <View style={styles.legendCont}>
-          <TextInput style={styles.input} id="address" name="address" required onChangeText={(inputText => setCountry(inputText))} />
+          <TextInput style={styles.input} id="address" name="address" required onChangeText={(inputText => setAddress(inputText))} />
          
         </View>
       </View>
       <View style={styles.fieldset}>
         <Text style={styles.legend}>Mailing_address</Text>
         <View style={styles.legendCont}>
-          <TextInput style={styles.input} id="mailing_address" name="mailing_address" required onChangeText={(inputText => setCountry(inputText))} />
+          <TextInput style={styles.input} id="mailing_address" name="mailing_address" required onChangeText={(inputText => setMailing_address(inputText))} />
          
         </View>
       </View>

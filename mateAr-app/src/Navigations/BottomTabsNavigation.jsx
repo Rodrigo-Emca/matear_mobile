@@ -9,8 +9,6 @@ import { FontAwesome } from '@expo/vector-icons';
 const Tab = createBottomTabNavigator();
 
 function BottomTabsNavigation() {
-  
-
   return (
     <Tab.Navigator
       screenOptions={{
