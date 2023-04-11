@@ -13,7 +13,7 @@ export default function Home() {
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             <View style={styles.seccion}>
               <View style={styles.texto}>
-              <Title text='Wellcome To MateAr' />
+              <Title text='Welcome To MateAr' />
             <Presentation text='Find the best mates and related products with the best prices' />
               </View>
             </View>

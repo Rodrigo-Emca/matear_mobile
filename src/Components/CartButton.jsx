@@ -5,13 +5,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CartButton(props) {
     const [pressed, setPressed] = useState(false);
-    //console.log(props)
 
     useEffect(() => {
         const cartItemKey = `cartItem${props.product._id}`;
         AsyncStorage.getItem(cartItemKey)
             .then((value) => {
-                //console.log(`Guardado en asyncStore: item ${cartItemKey} with value: ${value}`);
                 const cartItemExists = value !== null;
                 setPressed(cartItemExists);
             });

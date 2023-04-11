@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CarritoComponente() {
@@ -14,7 +14,6 @@ export default function CarritoComponente() {
                 .filter((key) => key.includes('cartItem'))
                 .map(async (key) => JSON.parse(await AsyncStorage.getItem(key)))
             );
-            //console.log('cartItems:', cartItems[1].product.product_id);
             setItems(cartItems);
         } catch (error) {
             console.log(error);
@@ -24,22 +23,43 @@ export default function CarritoComponente() {
         obtenerItems();
     }, []);
 
+    const eliminarItem = async (itemId) => {
+        try {
+        await AsyncStorage.removeItem(`cartItem${itemId}`);
+        const allKeys = await AsyncStorage.getAllKeys();
+        const cartItems = await Promise.all(
+            allKeys
+            .filter((key) => key.includes('cartItem'))
+            .map(async (key) => JSON.parse(await AsyncStorage.getItem(key)))
+        );
+        setItems(cartItems);
+        } catch (error) {
+        console.log(error);
+        }
+    };
+
     return (
         <ScrollView contentContainerStyle={styles.container}>
-        {items.length > 0 ? (
-            items.map((items, index) => (
-            <View key={index} style={styles.item}>
-                <Text>{items.product.product_id.title}</Text>
-                <Text>{items.product.product_id.price}</Text>
-                <Text>{items.product.product_id.description}</Text>
+            <View>
+                {items.length > 0 ? (
+                    items.map((item, index) => (
+                    <View key={index} style={styles.item}>
+                        <Text>{item.product.product_id.title}</Text>
+                        <Text>{item.product.product_id.price}</Text>
+                        <Text>{item.product.product_id.description}</Text>
+                        <TouchableOpacity onPress={() => eliminarItem(item.product._id)}>
+                        <Text style={styles.eliminar}>Eliminar</Text>
+                        </TouchableOpacity>
+                    </View>
+                    ))
+                ) : (
+                    <Text>No hay productos que coincidan con la búsqueda</Text>
+                )}
+
             </View>
-            ))
-        ) : (
-            <Text>No hay productos que coincidan con la búsqueda</Text>
-        )}
         </ScrollView>
     );
-    }
+}
 
     const styles = StyleSheet.create({
     container: {
@@ -56,5 +76,9 @@ export default function CarritoComponente() {
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
         width: '100%',
+    },
+    eliminar: {
+        color: 'red',
+        marginTop: 8,
     },
 });
