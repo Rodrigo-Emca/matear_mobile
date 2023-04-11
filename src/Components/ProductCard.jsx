@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 // import CartButton from '../CartButton/CartButton';
 
 export default function ProductCard({ product_id }) {
-
+    const navigation = useNavigation();
     //console.log(product_id.product_id.price)
 
     let stockText = '';
@@ -30,7 +31,7 @@ export default function ProductCard({ product_id }) {
                         <Text style={styles.stock}>Available: {stockText}</Text>
                         <View style={styles.contenedorDetails}>
                             <TouchableOpacity style={styles.detailButton}>
-                                <Text style={styles.detailButtonText}>Details</Text>
+                                <Text style={styles.detailButtonText} onPress={() => navigation.navigate('Details', { producto: product_id })}>Details</Text>
                             </TouchableOpacity>
                             {/* {productoIndividual.stock !== 0 && <CartButton product={productoIndividual} />} */}
                         </View>

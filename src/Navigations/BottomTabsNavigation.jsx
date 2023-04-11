@@ -1,11 +1,40 @@
 import React, { useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Register from "../Screen/Register";
 import Login from "../Screen/Login";
 import Shop from '../Screen/Shop'
+import Details from "../Screen/Details";
 import { FontAwesome } from '@expo/vector-icons';
+
+
+const ShopStackNavigator = createNativeStackNavigator();
+
+function ShopStack() {
+    return (
+        <ShopStackNavigator.Navigator
+            initialRouteName="ShopScreen"
+        >
+            
+            <ShopStackNavigator.Screen
+                name="ShopScreen"
+                component={Shop}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <ShopStackNavigator.Screen
+                name="Details"
+                component={Details}
+                options={{
+                    headerBackTitleVisible: false,
+                }}
+            />
+        </ShopStackNavigator.Navigator>
+    )
+}
 
 const Tab = createBottomTabNavigator();
 
@@ -59,7 +88,7 @@ function BottomTabsNavigation() {
       />
       <Tab.Screen
         name="shop"
-        component={Shop}
+        component={ShopStack}
         options={{
           headerShown: false,
           tabBarLabel: 'Shop',
