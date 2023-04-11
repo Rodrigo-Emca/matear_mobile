@@ -25,10 +25,9 @@ export default function FormRegister() {
         country: country,
         address: address,
         mailing_address: mailing_address,
-       
     }
     
-    let url = "http://localhost:8080/api/auth/signup";
+    let url = "https://matear-back.onrender.com/api/auth/signup";
     try {
       setLoading(true)
         await axios.post(url, data)

@@ -6,6 +6,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Register from "../Screen/Register";
 import Home from "../Screen/Home";
 import Shop from '../Screen/Shop'
+import Perfil from "../Screen/Profile";
+import LogOut from "../Screen/LogOut"; 
 import Details from "../Screen/Details";
 import { FontAwesome } from '@expo/vector-icons';
 import { useSelector } from "react-redux";
@@ -106,6 +108,23 @@ function BottomTabsNavigation() {
           ),
         }}
       />
+      { token ? (<Tab.Screen name="Perfil" options={{
+            headerShown: false,
+            tabBarLabel: 'Profile',
+            tabBarIcon: ({ color }) => (
+              <FontAwesome name="user" size={24} color={color} />
+            ),
+          }}>
+            {() => (
+              <>
+                <Perfil />
+                <LogOut />
+              </>
+            )}
+          </Tab.Screen>) : (<></>)}
+      
+      
+       
 
       <Tab.Screen
         name="shop"
@@ -123,5 +142,4 @@ function BottomTabsNavigation() {
 }
 
 export default BottomTabsNavigation;
-
 
