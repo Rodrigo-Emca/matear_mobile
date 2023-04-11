@@ -34,6 +34,9 @@ export default function FormLogin() {
       await AsyncStorage.setItem('user', JSON.stringify({
         name: user.name,
         mail: user.mail,
+        country: user.country,
+        address: user.address,
+        mailing_address: user.mailing_address,
        
       }));
       const storedUser = await AsyncStorage.getItem('user');

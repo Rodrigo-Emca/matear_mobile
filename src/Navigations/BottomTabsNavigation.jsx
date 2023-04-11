@@ -4,10 +4,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Register from "../Screen/Register";
-import Login from "../Screen/Login";
+import Home from "../Screen/Home";
 import Shop from '../Screen/Shop'
 import Details from "../Screen/Details";
 import { FontAwesome } from '@expo/vector-icons';
+import { useSelector } from "react-redux";
+
 
 
 const ShopStackNavigator = createNativeStackNavigator();
@@ -39,6 +41,24 @@ function ShopStack() {
 const Tab = createBottomTabNavigator();
 
 function BottomTabsNavigation() {
+ 
+  let state = useSelector((store) => store.bottomTabsReducer.state);
+  let [token, setToken] = useState("");
+ 
+
+  useFocusEffect(
+    React.useCallback(() => {
+      async function getData() {
+        try {
+          const value = await AsyncStorage.getItem("token");
+          setToken(value);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      getData();
+    }, [state])
+  );
   return (
     <Tab.Navigator
       screenOptions={{
@@ -63,7 +83,18 @@ function BottomTabsNavigation() {
           paddingBottom: 0,
         },
       }}
-    >
+    >   
+        <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="home" size={24} color={color} />
+          ),
+        }}
+      />
       <Tab.Screen
         name="register"
         component={Register}
@@ -75,17 +106,7 @@ function BottomTabsNavigation() {
           ),
         }}
       />
-      <Tab.Screen
-        name="login"
-        component={Login}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Login',
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="user" size={24} color={color} />
-          ),
-        }}
-      />
+
       <Tab.Screen
         name="shop"
         component={ShopStack}
@@ -102,3 +123,5 @@ function BottomTabsNavigation() {
 }
 
 export default BottomTabsNavigation;
+
+
