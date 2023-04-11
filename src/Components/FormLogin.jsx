@@ -19,8 +19,9 @@ export default function FormLogin() {
       mail: mail,
       password: password
     };
+    console.log(data)
 
-    let url = 'http://localhost:8080/api/auth/signin'
+    let url = 'https://matear-back.onrender.com/api/auth/signin'
 
     try {
       setLoading(true)
@@ -49,7 +50,7 @@ export default function FormLogin() {
       Alert.alert(
         'User logged in!',
       );
-      navigation.navigate('home');
+      navigation.navigate('Home');
     } catch (error) {
       console.log(error);
       Alert.alert(

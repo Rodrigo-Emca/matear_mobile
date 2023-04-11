@@ -7,6 +7,7 @@ import Register from "../Screen/Register";
 import Home from "../Screen/Home";
 import Shop from '../Screen/Shop'
 import Details from "../Screen/Details";
+import Cart from "../Screen/Cart";
 import { FontAwesome } from '@expo/vector-icons';
 import { useSelector } from "react-redux";
 
@@ -118,7 +119,20 @@ function BottomTabsNavigation() {
           ),
         }}
       />
+
+      <Tab.Screen
+        name="Cart"
+        component={Cart}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Cart',
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="shopping-cart" size={24} color={color} />
+          ),
+        }}
+      />
     </Tab.Navigator>
+    
   );
 }
 
