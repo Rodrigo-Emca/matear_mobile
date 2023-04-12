@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, SafeAreaView, Text, StyleSheet, StatusBar } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
 import productsActions from '../Store/ProductsAll/actions';
 import ProductCard from '../Components/ProductCard';
 
@@ -12,9 +13,12 @@ export default function Shop() {
 
     let productos = useSelector((store) => store.productos.productos);
 
-    useEffect(() => {
-        dispatch(read_all_products());
-    }, [reload]);
+    useFocusEffect(
+        React.useCallback(() => {
+            dispatch(read_all_products());
+        }, [reload])
+    );
+
 
     return (
         <SafeAreaView style={styles.container}>

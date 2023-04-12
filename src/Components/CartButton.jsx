@@ -2,52 +2,37 @@ import React, { useState, useEffect } from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function CartButton(props) {
     const [pressed, setPressed] = useState(false);
 
-    useEffect(() => {
+    useFocusEffect(
+        React.useCallback(() => {
+            const cartItemKey = `cartItem${props.product._id}`;
+            AsyncStorage.getItem(cartItemKey)
+                .then((value) => {
+                    const cartItemExists = value !== null;
+                    setPressed(cartItemExists);
+                });
+        }, [props.product._id])
+    );
+
+    const handleClick = () => {
         const cartItemKey = `cartItem${props.product._id}`;
         AsyncStorage.getItem(cartItemKey)
             .then((value) => {
-                const cartItemExists = value !== null;
-                setPressed(cartItemExists);
-            });
-    }, [props.product._id]);
-    
-
-    const handleClick = () => {
-        AsyncStorage.getItem('cartItems')
-            .then((value) => {
-                const cartItems = JSON.parse(value);
-                const existingKeys = Object.keys(cartItems || {}).filter((key) =>
-                    key.startsWith('cartItem')
-                );
-
-                if (cartItems) {
-                    let itemExists = false;
-
-                    existingKeys.forEach((key) => {
-                        const item = JSON.parse(cartItems[key]);
-                        if (item.product._id === props.product._id) {
-                            AsyncStorage.removeItem(key);
-                            setPressed(false);
-                            itemExists = true;
-                        }
-                    });
-
-                    if (!itemExists) {
-                        const cartItemCount = existingKeys.length + 1;
-                        const newItemKey = `cartItem${props.product._id}`;
-                        AsyncStorage.setItem(newItemKey, JSON.stringify(props));
-                        setPressed(true);
-                    }
+                if (value !== null) {
+                    AsyncStorage.removeItem(cartItemKey)
+                        .then(() => setPressed(false))
+                        .catch((error) => console.log(error));
                 } else {
-                    const newItemKey = `cartItem${props.product._id}`;
-                    AsyncStorage.setItem(newItemKey, JSON.stringify(props));
-                    setPressed(true);
+                    AsyncStorage.setItem(cartItemKey, JSON.stringify(props))
+                        .then(() => setPressed(true))
+                        .catch((error) => console.log(error));
                 }
-            });
+            })
+            .catch((error) => console.log(error));
     };
 
     const buttonStyle = {
