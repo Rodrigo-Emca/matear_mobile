@@ -5,7 +5,6 @@ import CartButton from './CartButton';
 
 export default function ProductCard({ product_id }) {
     const navigation = useNavigation();
-    //console.log(product_id.product_id.price)
 
     let stockText = '';
     if (product_id.product_id.stock === 0) {
