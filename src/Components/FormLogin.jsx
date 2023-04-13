@@ -5,15 +5,22 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BienvenidaRegister from './Wellcome';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import google from "../../assets/Google.png"
 import { Alert } from 'react-native';
+import bottomTabsActions from '../Store/Perfil/action'; 
+import detailsActions from "../Store/Logout/actions"
+
+const { mangaClicked } = detailsActions
+const { reloadBottomTabs } = bottomTabsActions
 
 export default function FormLogin() {
   const navigation = useNavigation();
   const [mail, setmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const dispatch = useDispatch();
+  let state = useSelector(store => store.bottomTabsReducer.state)
   async function handleSubmit() {
     let data = {
       mail: mail,
@@ -43,14 +50,19 @@ export default function FormLogin() {
       const storedUser = await AsyncStorage.getItem('user');
       console.log('Usuario almacenado:', storedUser);
       console.log('logueado');
-
+      dispatch(mangaClicked( {state:false} ))
+      dispatch(reloadBottomTabs({ state: false }));
+      dispatch(reloadBottomTabs({ state: !state }))
+   
       setTimeout(() => {
         setLoading(false);
-      }, 1500);
+      }, 3000);
       Alert.alert(
         'User logged in!',
+        
       );
       navigation.navigate('Home');
+      
     } catch (error) {
       console.log(error);
       Alert.alert(
