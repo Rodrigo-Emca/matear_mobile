@@ -1,39 +1,88 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, SafeAreaView, Text, StyleSheet, StatusBar } from 'react-native';
+import { View, ScrollView, SafeAreaView, Text, StyleSheet, StatusBar, TextInput } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import productsActions from '../Store/ProductsAll/actions';
 import ProductCard from '../Components/ProductCard';
+import categoriesActions from '../Store/Categories/actions'
+import { CheckBox } from 'react-native-elements';
+import TextFilter from '../Components/TextFilter';
 
-const { read_all_products } = productsActions;
+const { read_all_products, filter_product } = productsActions;
+const { read_all_categories } = categoriesActions
 
 export default function Shop() {
-    const [reload, setReload] = useState(false);
     const dispatch = useDispatch();
 
-    let productos = useSelector((store) => store.productos.productos);
+    const category = useSelector(store => store.categories.categories)
+    const productos = useSelector((store) => store.productos.productosFiltrados);
+    const [reload, setReload] = useState(false);
+    const [filter, setFilter] = useState({
+        condition: "",
+        categories: [],
+    })
 
-    useFocusEffect(
-        React.useCallback(() => {
-            dispatch(read_all_products());
-        }, [reload])
-    );
+
+    function handleChange(event) {
+        setFilter({
+            ...filter,
+            condition: event
+        })
+    }
+
+    const handleCategories = (value) => {
+        let existe = filter.categories.find(e => e === value)
+        if (existe) {
+            setFilter({
+                ...filter,
+                categories: filter.categories.filter(e => e !== value)
+            })
+        } else {
+            setFilter({
+                ...filter,
+                categories: [...filter.categories, value]
+            })
+        }
+    }
+
+    useEffect(() => {
+        dispatch(read_all_products());
+    }, [reload]);
+
+    useEffect(() => {
+        dispatch(read_all_categories());
+    }, []);
+
+    useEffect(() => {
+        dispatch(filter_product({ filter: filter }));
+    }, [filter])
 
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.filtroPrecios}>
-                <Text>Aqui va el filtro por precios</Text>
-            </View>
             <View style={styles.contenedorFiltroYCards}>
                 <View style={styles.filtroTexto}>
-                <Text>Aquí va el filtro busqueda por texto</Text>
+                    <TextFilter defaultText={filter.condition} onChangeText={(event) => handleChange(event)} />
+                </View>
+                <View style={styles.filtroCategorias}>
+                    {category.map(item => {
+                        return (
+                            <>
+                                <CheckBox
+                                    style={styles.checkCategory}
+                                    title={item.name} name="category"
+                                    value={item.name}
+                                    onPress={() => handleCategories(item._id)}
+                                />
+                            </>
+                        )
+                    })}
                 </View>
                 <ScrollView>
                     <View style={styles['cont-cards']}>
                         {productos.length ? (
                             productos.map((productoIndividual) => (
-                            <ProductCard key={productoIndividual._id} product_id={productoIndividual} />
+                                <ProductCard key={productoIndividual._id} product_id={productoIndividual} />
                             ))
                         ) : (
                             <Text>not found</Text>
@@ -53,10 +102,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
-    filtroPrecios: {
-        paddingVertical: 10,
-        backgroundColor: 'pink',
-    },
+
     contenedorFiltroYCards: {
         flex: 1,
         flexDirection: 'column',
@@ -64,8 +110,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     filtroTexto: {
+        width: 330,
+        height: 45,
+        marginBottom: 10,
         paddingVertical: 10,
-        backgroundColor: 'yellow',
+        backgroundColor: 'transparent',
+        borderWidth: 1,
+        borderRadius: 10,
+        display: 'flex',
+        alignItems: 'center',
     },
     'cont-cards': {
         flex: 1,
@@ -73,4 +126,17 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'center',
     },
+    filtroCategorias: {
+        display: 'flex',
+        alignItems: 'flex-start',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        flexDirection: 'column',
+        width: '100%',
+        height: 180,
+        borderWidth: 1,
+        backgroundColor: 'white',
+    },
+
 });
+
