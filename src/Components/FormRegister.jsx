@@ -25,7 +25,6 @@ export default function FormRegister() {
         country: country,
         address: address,
         mailing_address: mailing_address,
-       
     }
     
     let url = "https://matear-back.onrender.com/api/auth/signup";
