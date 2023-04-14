@@ -36,12 +36,17 @@ export default function CartButton(props) {
     };
 
     const buttonStyle = {
-        backgroundColor: pressed ? 'grey' : 'white',
+        backgroundColor: pressed ? 'grey' : '#a1722f',
         padding: 10,
         borderRadius: 5,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+        marginTop: 20,
+        marginLeft:8,
     };
 
     return (

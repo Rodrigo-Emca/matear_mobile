@@ -97,9 +97,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    
   },
   userContainer: {
     alignItems: 'center',
+    backgroundColor:'#fffbfb67',
+    padding:6,
+    borderRadius:20,
   },
   userTitle: {
     fontSize: 25,

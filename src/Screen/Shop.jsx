@@ -73,6 +73,7 @@ export default function Shop() {
                                     title={item.name} name="category"
                                     value={item.name}
                                     onPress={() => handleCategories(item._id)}
+                                    
                                 />
                             </>
                         )
@@ -137,6 +138,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         backgroundColor: 'white',
     },
-
+    checkCategory:{
+     
+    }
 });
 
