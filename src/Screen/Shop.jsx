@@ -7,6 +7,7 @@ import ProductCard from '../Components/ProductCard';
 import categoriesActions from '../Store/Categories/actions'
 import { CheckBox } from 'react-native-elements';
 import TextFilter from '../Components/TextFilter';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const { read_all_products, filter_product } = productsActions;
 const { read_all_categories } = categoriesActions
@@ -62,6 +63,7 @@ export default function Shop() {
         <SafeAreaView style={styles.container}>
             <View style={styles.contenedorFiltroYCards}>
                 <View style={styles.filtroTexto}>
+                    <Ionicons name="search-outline" size={35} color="#a1722f" style={{position:'absolute', top:2, left:5}}/>
                     <TextFilter defaultText={filter.condition} onChangeText={(event) => handleChange(event)} />
                 </View>
                 <View style={styles.filtroCategorias}>
@@ -73,7 +75,7 @@ export default function Shop() {
                                     title={item.name} name="category"
                                     value={item.name}
                                     onPress={() => handleCategories(item._id)}
-                                    
+
                                 />
                             </>
                         )
@@ -138,8 +140,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         backgroundColor: 'white',
     },
-    checkCategory:{
-     
+    checkCategory: {
+
     }
 });
 

@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     lineHeight: 15,
     letterSpacing: 1,
     fontWeight: 500,
-    color: "white",
+    color: "black",
   },
   input: {
     width: "90%",

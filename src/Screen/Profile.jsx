@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
     borderRadius: 5,
   },
-  input: {
+  input:{
     fontSize: 20,
   },
   buttonText: {

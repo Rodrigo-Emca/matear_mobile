@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
-import Logomr from '../../assets/LOGO-MATEAR-BLANCO.png';
+import Logomr from '../../assets/LOGO-MATEAR-NEGRO2.png';
 
 export default function Wellcome(props) {
   return (

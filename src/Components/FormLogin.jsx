@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     gap: 20,
     marginTop: 30,
     width: "100%",
-    backgroundColor: 'rgb(230, 230, 230)', 
+    backgroundColor: 'white', 
   },
   fieldset: {
     display: "flex",
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     height: 65,
     width: "90%",
     justifyContent: "flex-start",
-    backgroundColor: "#E6E6E6",
+    backgroundColor: "white",
     borderBottomWidth: 1,
   },
   legendCont:{
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     lineHeight: 15,
     letterSpacing: 1,
     fontWeight: 500,
-    color: "white",
+    color: "black",
   },
   input: {
     width: "90%",
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 60,
     marginBottom: 20,
-    width: "90%",
+    width: "80%",
     justifyContent: "center",
     alignItems: "center",
   },
