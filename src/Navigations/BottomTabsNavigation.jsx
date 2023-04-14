@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Register from "../Screen/Register";
 import Home from "../Screen/Home";
@@ -45,6 +44,8 @@ const Tab = createBottomTabNavigator();
 
 function BottomTabsNavigation() {
   let state = useSelector((store) => store.bottomTabsReducer.state);
+
+  
   React.useEffect(() => {
     async function getData() {
       try {

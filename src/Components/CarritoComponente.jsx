@@ -1,97 +1,127 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Linking } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+
 
 export default function CarritoComponente() {
-    const [items, setItems] = useState([]);
+  const [items, setItems] = useState([]);
 
-    //Para traer los productos agregados al carrito
-    useFocusEffect(
-        React.useCallback(() => {
-            const obtenerItems = async () => {
-                try {
-                const allKeys = await AsyncStorage.getAllKeys();
-                const cartItems = await Promise.all(
-                    allKeys
-                    .filter((key) => key.includes('cartItem'))
-                    .map(async (key) => JSON.parse(await AsyncStorage.getItem(key)))
-                );
-                setItems(cartItems);
-                } catch (error) {
-                console.log(error);
-                }
-            };
-            obtenerItems();
-            }, [])
-        );
-
-    const eliminarItem = async (itemId) => {
+  //Para traer los productos agregados al carrito
+  useFocusEffect(
+    React.useCallback(() => {
+      const obtenerItems = async () => {
         try {
-        await AsyncStorage.removeItem(`cartItem${itemId}`);
-        const allKeys = await AsyncStorage.getAllKeys();
-        const cartItems = await Promise.all(
+          const allKeys = await AsyncStorage.getAllKeys();
+          const cartItems = await Promise.all(
             allKeys
-            .filter((key) => key.includes('cartItem'))
-            .map(async (key) => JSON.parse(await AsyncStorage.getItem(key)))
-        );
-        setItems(cartItems);
+              .filter((key) => key.includes('cartItem'))
+              .map(async (key) => JSON.parse(await AsyncStorage.getItem(key)))
+          );
+          setItems(cartItems);
         } catch (error) {
-        console.log(error);
+          console.log(error);
         }
-    };
+      };
+      obtenerItems();
+    }, [])
+  );
 
-    const vaciarCarrito = async () => {
-        try {
-            const allKeys = await AsyncStorage.getAllKeys();
-            await AsyncStorage.multiRemove(allKeys.filter((key) => key.includes('cartItem')));
-            setItems([]);
-        } catch (error) {
-            
-        }
-    };
-
-    const agregarUnidad = (item) => {
-        const cantidadActual = item.cantidad || 1;
-        if (cantidadActual < item.product.product_id.stock) {
-            const nuevoItem = {
-                ...item,
-                cantidad: cantidadActual + 1
-            }
-            actualizarItem(nuevoItem);
-        }
-    };
-
-    const disminuirUnidad = (item) => {
-        const cantidadActual = item.cantidad || 1;
-        if (cantidadActual > 1) {
-            const nuevoItem = {
-                ...item,
-                cantidad: cantidadActual - 1
-            }
-            actualizarItem(nuevoItem);
-        } else {
-            eliminarItem(item.product._id);
-        }
-    };
-
-    const actualizarItem = async (nuevoItem) => {
-        try {
-            await AsyncStorage.setItem(`cartItem${nuevoItem.product._id}`, JSON.stringify(nuevoItem));
-            const allKeys = await AsyncStorage.getAllKeys();
-            const cartItems = await Promise.all(
-                allKeys
-                .filter((key) => key.includes('cartItem'))
-                .map(async (key) => JSON.parse(await AsyncStorage.getItem(key)))
-            );
-            setItems(cartItems);
-        } catch (error) {
-            console.log(error);
-        }
+  const eliminarItem = async (itemId) => {
+    try {
+      await AsyncStorage.removeItem(`cartItem${itemId}`);
+      const allKeys = await AsyncStorage.getAllKeys();
+      const cartItems = await Promise.all(
+        allKeys
+          .filter((key) => key.includes('cartItem'))
+          .map(async (key) => JSON.parse(await AsyncStorage.getItem(key)))
+      );
+      setItems(cartItems);
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-    const totalCompra = items.reduce((total, item) => total + (item.product.product_id.price * (item.cantidad || 1)), 0)
+  const vaciarCarrito = async () => {
+    try {
+      const allKeys = await AsyncStorage.getAllKeys();
+      await AsyncStorage.multiRemove(allKeys.filter((key) => key.includes('cartItem')));
+      setItems([]);
+    } catch (error) {
 
+    }
+  };
+
+  const agregarUnidad = (item) => {
+    const cantidadActual = item.cantidad || 1;
+    if (cantidadActual < item.product.product_id.stock) {
+      const nuevoItem = {
+        ...item,
+        cantidad: cantidadActual + 1
+      }
+      actualizarItem(nuevoItem);
+    }
+  };
+
+  const disminuirUnidad = (item) => {
+    const cantidadActual = item.cantidad || 1;
+    if (cantidadActual > 1) {
+      const nuevoItem = {
+        ...item,
+        cantidad: cantidadActual - 1
+      }
+      actualizarItem(nuevoItem);
+    } else {
+      eliminarItem(item.product._id);
+    }
+  };
+
+  const actualizarItem = async (nuevoItem) => {
+    try {
+      await AsyncStorage.setItem(`cartItem${nuevoItem.product._id}`, JSON.stringify(nuevoItem));
+      const allKeys = await AsyncStorage.getAllKeys();
+      const cartItems = await Promise.all(
+        allKeys
+          .filter((key) => key.includes('cartItem'))
+          .map(async (key) => JSON.parse(await AsyncStorage.getItem(key)))
+      );
+      setItems(cartItems);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+ 
+  
+  const [counts, setCounts] = useState([]);
+   
+
+
+    const handleCheckout = async () => {
+        const totalPrice = items.reduce(
+          (total, item) => total + (item.product.product_id.price * (item.cantidad || 1)),
+          0
+        );
+              
+        const orderData = {
+          items: items.map((item) => ({
+            product_id: item.product.product_id,
+            quantity: counts[items.indexOf(item)],
+          })),
+          total_price: totalPrice 
+        };
+              
+        try {
+          const response = await axios.post("https://matear-back.onrender.com/api/payment", orderData);
+          Linking.openURL(response.data.response.body.init_point);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      const totalCompra = items.reduce((total, item) => total + (item.product.product_id.price * (item.cantidad || 1)), 0)
+      
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View>
@@ -133,7 +163,7 @@ export default function CarritoComponente() {
                     </View>
 
                     <TouchableOpacity style={styles.botonComprar}>
-                        <Text style={styles.textoBotonVaciar}>Finalizar compra</Text>
+                        <Text style={styles.textoBotonVaciar} onPress={handleCheckout}>Finalizar compra</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={vaciarCarrito} style={styles.botonVaciar}>
                         <Text style={styles.textoBotonVaciar}>Vaciar carrito</Text>
