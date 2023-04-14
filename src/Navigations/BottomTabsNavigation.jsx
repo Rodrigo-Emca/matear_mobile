@@ -44,7 +44,7 @@ const Tab = createBottomTabNavigator();
 
 function BottomTabsNavigation() {
   let state = useSelector((store) => store.bottomTabsReducer.state);
-
+ 
   
   React.useEffect(() => {
     async function getData() {
@@ -116,7 +116,7 @@ function BottomTabsNavigation() {
 ) : null
 }
 
-      { isLogged ? (
+      { isLogged  ? (
   <Tab.Screen name="Perfil" options={{
       headerShown: false,
       tabBarLabel: 'Profile',
