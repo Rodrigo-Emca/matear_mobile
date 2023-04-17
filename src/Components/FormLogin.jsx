@@ -112,7 +112,6 @@ export default function FormLogin() {
         <TouchableOpacity
           style={styles.button2}
           onPress={() => {
-          
           }}
         >
           <Image style={styles.googleImg} source={google} />
@@ -187,7 +186,7 @@ const styles = StyleSheet.create({
     lineHeight: 15,
     letterSpacing: 1,
     fontWeight: 500,
-    color: "white",
+    color: "black",
   },
   input: {
     width: "90%",
@@ -214,7 +213,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 60,
     marginBottom: 20,
-    width: "90%",
+    width: 400,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -234,7 +233,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 60,
     margin: 15,
-    width: "90%",
+    width: 400,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
