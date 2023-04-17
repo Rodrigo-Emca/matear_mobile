@@ -1,29 +1,41 @@
-import React, { useState } from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, ImageBackground, ScrollView, Text} from 'react-native';
 import FormLogin from '../Components/FormLogin';
 import bg from '../../assets/cat-mates.jpg';
 import Title from '../Components/Title';
 import Presentation from '../Components/Presentacion';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Home() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  useEffect(() => {
+  async function getToken() {
+  const token = await AsyncStorage.getItem('token');
+  if (token) {
+  setIsLoggedIn(true);
+  }
+  }
+  getToken();
+  }, []);
 
-    return (
-        <ImageBackground source={bg} style={styles.backgroundImage}>
-          <ScrollView contentContainerStyle={styles.scrollContainer}>
-            <View style={styles.seccion}>
-              <View style={styles.texto}>
-              <Title text='Welcome To MateAr' />
-            <Presentation text='Find the best mates and related products with the best prices' />
-              </View>
+  return (
+      <ImageBackground source={bg} style={styles.backgroundImage}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.seccion}>
+            <View style={styles.texto}>
+            <Title text='Welcome to MateAr' />
+          <Presentation text='Find the best mates and related products with the best prices' />
             </View>
+          </View>
+          {!isLoggedIn && (
             <View style={styles.seccion2}>
-              <FormLogin />
+            <FormLogin />
             </View>
-          </ScrollView>
-        </ImageBackground>
-      );
-
+            )}
+        </ScrollView>
+      </ImageBackground>
+    );
 }
 
 

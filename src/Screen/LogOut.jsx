@@ -73,9 +73,7 @@ export default function LogOut() {
   return (
   <TouchableOpacity  onPress={handleLogOut}   style={style.button}  activeOpacity={0.7}>
     <Text  style={style.button}> Log Out </Text>
-
-    
-    </TouchableOpacity>
+  </TouchableOpacity>
   )
 }
 

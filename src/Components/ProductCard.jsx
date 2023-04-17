@@ -21,9 +21,9 @@ export default function ProductCard({ product_id }) {
 
     let stockText = '';
     if (product_id.product_id.stock === 0) {
-        stockText = 'Momentaneamente sin Stock';
+        stockText = 'Momentarily out of Stock';
     } else if (product_id.product_id.stock < 5) {
-        stockText = 'Ultimas ' + `${product_id.product_id.stock}` + ' unidades disponibles';
+        stockText = 'Last ' + `${product_id.product_id.stock}` + ' units available!';
     } else {
         stockText = `${product_id.product_id.stock} units`;
     }
@@ -35,19 +35,19 @@ export default function ProductCard({ product_id }) {
             <Image source={{ uri: product_id.product_id.cover_photo }} style={styles.imagenProducto} />
             </View>
             <View style={styles.details}>
-            <View style={styles.center}>
-                <Text style={styles.title}>{product_id.title}</Text>
-                <Text style={styles.price}>
-                $ {parseFloat(product_id.product_id.price).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 3 })} ARS
-                </Text>
-                <Text style={styles.stock}>Available: {stockText}</Text>
-                <View style={styles.contenedorDetails}>
-                <TouchableOpacity style={styles.btnDetail}>
-                    <Text style={styles.btnDetailText} onPress={() => navigation.navigate('Details', { producto: product_id })}>Details</Text>
-                </TouchableOpacity>
-                {token && product_id.product_id.stock !== 0 && <CartButton product={product_id} />}
+                <View style={styles.center}>
+                    <Text style={styles.title}>{product_id.title}</Text>
+                    <Text style={styles.price}>
+                    $ {parseFloat(product_id.product_id.price).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 3 })} ARS
+                    </Text>
+                    <Text style={styles.stock}>Available: {stockText}</Text>
+                    <View style={styles.contenedorDetails}>
+                        <TouchableOpacity style={styles.btnDetail}>
+                            <Text style={styles.btnDetailText} onPress={() => navigation.navigate('Details', { producto: product_id })}>Details</Text>
+                        </TouchableOpacity>
+                        {token && product_id.product_id.stock !== 0 && <CartButton product={product_id} />}
+                    </View>
                 </View>
-            </View>
             </View>
         </View>
         </View>
@@ -60,9 +60,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        // borderWidth: 1,
         borderRadius: 5,
-        width: '85%',
+        width: '90%',
         margin: 10
     },
     card: {
@@ -70,12 +69,13 @@ const styles = StyleSheet.create({
         width: '100%',
         display: 'flex',
         justifyContent: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRadius: 15,
     },
     imageContainer: {
-        // borderWidth: 1,
         alignContent: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        paddingTop: 10
     },
     imagenProducto: {
         width: 300,
@@ -108,18 +108,22 @@ const styles = StyleSheet.create({
     },
     contenedorDetails: {
         flexDirection: 'row',
+        height: 60,
+        gap: 15,
     },
     btnDetail: {
         backgroundColor: '#4CAF50',
+        height: 60,
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
-        marginTop: 20,
+        marginTop: 0,
+        justifyContent: 'center'
         },
-        btnDetailText: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        },
+    btnDetailText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    },
 })
