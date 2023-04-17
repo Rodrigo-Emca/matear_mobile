@@ -66,8 +66,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'space-between',
       gap: 35,
-      // borderWidth: 2,
-      height: 850,
+      height: '90%',
       paddingTop: 80
     },
   });
