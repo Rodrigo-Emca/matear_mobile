@@ -71,7 +71,7 @@ export default function LogOut() {
   };
 
   return (
-  <TouchableOpacity  onPress={handleLogOut}   style={style.button}  activeOpacity={0.7}>
+  <TouchableOpacity  onPress={handleLogOut} activeOpacity={0.7}>
     <Text  style={style.button}> Log Out </Text>
   </TouchableOpacity>
   )
@@ -80,8 +80,10 @@ export default function LogOut() {
 const style = StyleSheet.create ({
   button: {
     backgroundColor: '#C5A880',
+    height: 50,
     color: 'white',
     textAlign: 'center',
+    alignItems: 'center',
     fontSize: 25,  },
     buttonHover: {
       backgroundColor: 'darkgrey',
