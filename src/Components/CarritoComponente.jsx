@@ -124,7 +124,7 @@ export default function CarritoComponente() {
                     <View key={index} style={styles.item}>
                         <Text style={styles.textoPrincipal}>{item.product.product_id.title}</Text>
                         <Text style={styles.textoSecundario}>Stock: {item.product.product_id.stock}</Text>
-                        <Text style={styles.textoSecundario}>$ {item.product.product_id.price} ARS</Text>
+                        <Text style={styles.textoSecundario}>$ {parseFloat(item.product.product_id.price).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 3 })},00 ARS</Text>
                         <Text>{item.product.product_id.description}</Text>
 
                         <View style={styles.cantidadContainer}>
@@ -157,7 +157,7 @@ export default function CarritoComponente() {
             {items.length > 0 && (
                 <View style={styles.contenedorFinalizarCompra}>
                     <View> 
-                        <Text style={styles.textoPrincipal}>TOTAL: ${totalCompra} ARS</Text>
+                        <Text style={styles.textoPrincipal}>TOTAL: $ {parseFloat(totalCompra).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 3 })},00 ARS</Text>
                     </View>
                     <View style={styles.containerFinalizaryEliminar}>
                       <TouchableOpacity style={styles.botonComprar}>

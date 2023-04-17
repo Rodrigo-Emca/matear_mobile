@@ -43,12 +43,12 @@ export default function Details(producto) {
                     <Text style={styles.title}>{productDetails?.product_id?.title}</Text>
                     <Text style={styles.description}>{productDetails?.product_id?.description}</Text>
                     <Text style={styles.stock}>
-                        Stock:
+                        Stock: 
                         <Text style={{ color: productDetails?.product_id?.stock < 3 ? 'red' : 'green' }}>
                             {productDetails?.product_id?.stock}
                         </Text>
                     </Text>
-                    <Text style={styles.price}>Precio: ${productDetails?.product_id?.price}</Text>
+                    <Text style={styles.price}>Precio: $ {parseFloat(productDetails?.product_id?.price).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 3 })},00 ARS</Text>
                     <Text style={styles.categorias}>
                         Categorias: <Text style={styles.categoria}>Mates</Text>
                     </Text>

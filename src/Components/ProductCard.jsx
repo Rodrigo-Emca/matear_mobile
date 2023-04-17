@@ -38,7 +38,7 @@ export default function ProductCard({ product_id }) {
                 <View style={styles.center}>
                     <Text style={styles.title}>{product_id.title}</Text>
                     <Text style={styles.price}>
-                    $ {parseFloat(product_id.product_id.price).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 3 })} ARS
+                    $ {parseFloat(product_id.product_id.price).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 3 })},00 ARS
                     </Text>
                     <Text style={styles.stock}>Available: {stockText}</Text>
                     <View style={styles.contenedorDetails}>
