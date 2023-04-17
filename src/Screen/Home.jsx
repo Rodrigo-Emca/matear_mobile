@@ -26,7 +26,6 @@ export default function Home() {
           <View style={styles.seccion}>
             <View style={styles.texto}>
               <Image source={logoMatear}/>
-            {/* <Title text='Welcome to MateAr' /> */}
           <Presentation text='Find the best mates and related products with the best prices' />
             </View>
           </View>

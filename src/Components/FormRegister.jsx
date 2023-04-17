@@ -103,14 +103,14 @@ export default function FormRegister() {
 
       </TouchableOpacity>
 
-      <View style={styles.divGoogle}>
+      {/* <View style={styles.divGoogle}>
         <TouchableOpacity style={styles.button2} onPress={() => {
           
           }}>
           <Image style={styles.googleImg} source={google} />
           <Text style={styles.buttonText2}>Sign up with Google</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <View style={styles.parrafosForm}>
         <Text>

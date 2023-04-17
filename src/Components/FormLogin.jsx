@@ -108,7 +108,7 @@ export default function FormLogin() {
     
       </TouchableOpacity>
 
-      <View style={styles.divGoogle}>
+      {/* <View style={styles.divGoogle}>
         <TouchableOpacity
           style={styles.button2}
           onPress={() => {
@@ -117,7 +117,7 @@ export default function FormLogin() {
           <Image style={styles.googleImg} source={google} />
           <Text style={styles.buttonText2}>Sign in with Google</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <View style={styles.parrafosForm}>
         <Text>
