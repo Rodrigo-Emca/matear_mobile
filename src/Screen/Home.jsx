@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, ImageBackground, ScrollView, Text} from 'react-native';
+import { View, StyleSheet, ImageBackground, ScrollView, Text, Image} from 'react-native';
 import FormLogin from '../Components/FormLogin';
-import bg from '../../assets/cat-mates.jpg';
+import bg from '../../assets/mate-paisaje.jpg';
+import logoMatear from '../../assets/LOGO-MATEAR-NEGRO.png'
 import Title from '../Components/Title';
 import Presentation from '../Components/Presentacion';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -24,7 +25,8 @@ export default function Home() {
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <View style={styles.seccion}>
             <View style={styles.texto}>
-            <Title text='Welcome to MateAr' />
+              <Image source={logoMatear}/>
+            {/* <Title text='Welcome to MateAr' /> */}
           <Presentation text='Find the best mates and related products with the best prices' />
             </View>
           </View>
@@ -63,7 +65,10 @@ const styles = StyleSheet.create({
     },
     texto: {
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'space-between',
       gap: 35,
+      // borderWidth: 2,
+      height: 850,
+      paddingTop: 80
     },
   });
