@@ -90,10 +90,10 @@ export default function FormRegister() {
         </View>
       </View>
       <View style={styles.fieldset}>
-        <Text style={styles.legend}>Mailing_address</Text>
+        <Text style={styles.legend}>Mailing address</Text>
         <View style={styles.legendCont}>
           <TextInput style={styles.input} id="mailing_address" name="mailing_address" required onChangeText={(inputText => setMailing_address(inputText))} />
-         
+
         </View>
       </View>
      
@@ -103,14 +103,14 @@ export default function FormRegister() {
 
       </TouchableOpacity>
 
-      <View style={styles.divGoogle}>
+      {/* <View style={styles.divGoogle}>
         <TouchableOpacity style={styles.button2} onPress={() => {
           
           }}>
           <Image style={styles.googleImg} source={google} />
           <Text style={styles.buttonText2}>Sign up with Google</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <View style={styles.parrafosForm}>
         <Text>
@@ -130,10 +130,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     gap: 7,
-    marginTop: 5,
+    marginTop: 25,
     width: "100%",
   
-   
   },
   fieldset: {
     display: "flex",
@@ -198,7 +197,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 50,
     marginBottom: 20,
-    width: "90%",
+    width: 400,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -212,7 +211,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 50,
     margin: 10,
-    width: "90%",
+    width: 400,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,

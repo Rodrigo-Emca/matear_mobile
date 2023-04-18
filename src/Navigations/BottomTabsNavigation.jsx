@@ -44,7 +44,6 @@ const Tab = createBottomTabNavigator();
 
 function BottomTabsNavigation() {
   let state = useSelector((store) => store.bottomTabsReducer.state);
- 
   
   React.useEffect(() => {
     async function getData() {

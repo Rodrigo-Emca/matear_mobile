@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
-import Logomr from '../../assets/LOGO-MATEAR-NEGRO2.png';
+import Logomr from '../../assets/LOGO-MATEAR-NEGRO.png';
 
 export default function Wellcome(props) {
   return (
@@ -14,15 +14,13 @@ export default function Wellcome(props) {
 
 const styles = StyleSheet.create({
   bienvenida: {
-    marginTop:50,
+    marginTop: 100,
     alignItems: 'center',
     justifyContent: "flex-start",
-  
   },
   logo: {
-    
-    width: 200,
-    height: 100,
+    width: 300,
+    height: 130,
     resizeMode: 'contain',
   },
   welcomeH2: {

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, SafeAreaView, Text, StyleSheet, StatusBar, TextInput } from 'react-native';
+import { View, ScrollView, SafeAreaView, Text, StyleSheet, StatusBar } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
 import productsActions from '../Store/ProductsAll/actions';
 import ProductCard from '../Components/ProductCard';
 import categoriesActions from '../Store/Categories/actions'
@@ -15,14 +14,14 @@ const { read_all_categories } = categoriesActions
 export default function Shop() {
     const dispatch = useDispatch();
 
-    const category = useSelector(store => store.categories.categories)
+    const categories = useSelector(store => store.categories.categories)
     const productos = useSelector((store) => store.productos.productosFiltrados);
     const [reload, setReload] = useState(false);
     const [filter, setFilter] = useState({
         condition: "",
         categories: [],
     })
-
+    const [selectedCategories, setSelectedCategories] = useState([]);
 
     function handleChange(event) {
         setFilter({
@@ -37,12 +36,14 @@ export default function Shop() {
             setFilter({
                 ...filter,
                 categories: filter.categories.filter(e => e !== value)
-            })
+            });
+            setSelectedCategories(selectedCategories.filter(e => e !== value));
         } else {
             setFilter({
                 ...filter,
                 categories: [...filter.categories, value]
-            })
+            });
+            setSelectedCategories([...selectedCategories, value]);
         }
     }
 
@@ -67,28 +68,29 @@ export default function Shop() {
                     <TextFilter defaultText={filter.condition} onChangeText={(event) => handleChange(event)} />
                 </View>
                 <View style={styles.filtroCategorias}>
-                    {category.map(item => {
+                    {categories.map(item => {
                         return (
                             <>
                                 <CheckBox
+                                    key={item._id}
                                     style={styles.checkCategory}
                                     title={item.name} name="category"
                                     value={item.name}
                                     onPress={() => handleCategories(item._id)}
-
+                                    checked={selectedCategories.includes(item._id)}
                                 />
                             </>
                         )
                     })}
                 </View>
                 <ScrollView>
-                    <View style={styles['cont-cards']}>
+                    <View style={styles.contCards}>
                         {productos.length ? (
                             productos.map((productoIndividual) => (
                                 <ProductCard key={productoIndividual._id} product_id={productoIndividual} />
                             ))
                         ) : (
-                            <Text>not found</Text>
+                            <Text>Sorry! Not found</Text>
                         )}
                     </View>
                 </ScrollView>
@@ -104,6 +106,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
+        backgroundColor: 'rgb(230, 230, 230)'
     },
 
     contenedorFiltroYCards: {
@@ -113,21 +116,23 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     filtroTexto: {
-        width: 330,
+        width: 480,
         height: 45,
         marginBottom: 10,
         paddingVertical: 10,
-        backgroundColor: 'transparent',
+        backgroundColor: 'white',
         borderWidth: 1,
         borderRadius: 10,
         display: 'flex',
         alignItems: 'center',
     },
-    'cont-cards': {
+    contCards: {
         flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
+        paddingTop: 5,
+        width: '100%',
     },
     filtroCategorias: {
         display: 'flex',
@@ -135,13 +140,9 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
         flexDirection: 'column',
-        width: '100%',
-        height: 180,
+        width: 480,
+        height: 120,
         borderWidth: 1,
         backgroundColor: 'white',
     },
-    checkCategory: {
-
-    }
 });
-

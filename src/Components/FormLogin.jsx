@@ -108,17 +108,16 @@ export default function FormLogin() {
     
       </TouchableOpacity>
 
-      <View style={styles.divGoogle}>
+      {/* <View style={styles.divGoogle}>
         <TouchableOpacity
           style={styles.button2}
           onPress={() => {
-          
           }}
         >
           <Image style={styles.googleImg} source={google} />
           <Text style={styles.buttonText2}>Sign in with Google</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <View style={styles.parrafosForm}>
         <Text>
@@ -142,18 +141,19 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "center",
     gap: 20,
-    marginTop: 30,
+    marginTop: 0,
     width: "100%",
-    backgroundColor: 'white', 
+    height: 980,
+    backgroundColor: 'rgb(230, 230, 230)', 
   },
   fieldset: {
     display: "flex",
     alignItems: "flex-start",
     marginTop: 30,
-       width: 410,
+    width: 410,
     height: 65,
     width: "90%",
     justifyContent: "flex-start",
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 60,
     marginBottom: 20,
-    width: "80%",
+    width: 400,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 60,
     margin: 15,
-    width: "90%",
+    width: 400,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,

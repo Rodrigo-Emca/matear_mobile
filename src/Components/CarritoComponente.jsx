@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Linking } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,7 +8,6 @@ import axios from 'axios';
 export default function CarritoComponente() {
   const [items, setItems] = useState([]);
 
-  //Para traer los productos agregados al carrito
   useFocusEffect(
     React.useCallback(() => {
       const obtenerItems = async () => {
@@ -49,7 +48,6 @@ export default function CarritoComponente() {
       await AsyncStorage.multiRemove(allKeys.filter((key) => key.includes('cartItem')));
       setItems([]);
     } catch (error) {
-
     }
   };
 
@@ -92,45 +90,41 @@ export default function CarritoComponente() {
     }
   }
 
- 
-  
   const [counts, setCounts] = useState([]);
-   
 
-
-    const handleCheckout = async () => {
-        const totalPrice = items.reduce(
-          (total, item) => total + (item.product.product_id.price * (item.cantidad || 1)),
-          0
-        );
-              
-        const orderData = {
-          items: items.map((item) => ({
-            product_id: item.product.product_id,
-            quantity: counts[items.indexOf(item)],
-          })),
-          total_price: totalPrice 
-        };
-              
-        try {
-          const response = await axios.post("https://matear-back.onrender.com/api/payment", orderData);
-          Linking.openURL(response.data.response.body.init_point);
-        } catch (error) {
-          console.error(error);
-        }
+  const handleCheckout = async () => {
+      const totalPrice = items.reduce(
+        (total, item) => total + (item.product.product_id.price * (item.cantidad || 1)),
+        0
+      );
+      
+      const orderData = {
+        items: items.map((item) => ({
+          product_id: item.product.product_id,
+          quantity: counts[items.indexOf(item)],
+        })),
+        total_price: totalPrice 
       };
+      
+      try {
+        const response = await axios.post("https://matear-back.onrender.com/api/payment", orderData);
+        Linking.openURL(response.data.response.body.init_point);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-      const totalCompra = items.reduce((total, item) => total + (item.product.product_id.price * (item.cantidad || 1)), 0)
+    const totalCompra = items.reduce((total, item) => total + (item.product.product_id.price * (item.cantidad || 1)), 0)
       
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <View>
+        <View contentContainerStyle={styles.container}>
+            <ScrollView style={styles.ScrollViewContainer}>
                 {items.length > 0 ? (
                     items.map((item, index) => (
                     <View key={index} style={styles.item}>
-                        <Text>{item.product.product_id.title}</Text>
-                        <Text>Stock: {item.product.product_id.stock}</Text>
-                        <Text>$ {item.product.product_id.price} ARS</Text>
+                        <Text style={styles.textoPrincipal}>{item.product.product_id.title}</Text>
+                        <Text style={styles.textoSecundario}>Stock: {item.product.product_id.stock}</Text>
+                        <Text style={styles.textoSecundario}>$ {parseFloat(item.product.product_id.price).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 3 })},00 ARS</Text>
                         <Text>{item.product.product_id.description}</Text>
 
                         <View style={styles.cantidadContainer}>
@@ -153,24 +147,29 @@ export default function CarritoComponente() {
                     </View>
                     ))
                 ) : (
-                    <Text>No hay productos que coincidan con la búsqueda</Text>
+                  <View style={styles.contenedorNotFound}>
+                    <Text style={styles.textoNotFound}>It seems that there are no products in your cart.</Text>
+                    <Text style={styles.textoNotFound}>Why don't you try adding some products?</Text>
+                  </View>
                 )}
-            </View>
-            {items.length > 0 && (
-                <View>
-                    <View> 
-                        <Text>TOTAL: ${totalCompra} ARS</Text>
-                    </View>
 
-                    <TouchableOpacity style={styles.botonComprar}>
-                        <Text style={styles.textoBotonVaciar} onPress={handleCheckout}>Finalizar compra</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={vaciarCarrito} style={styles.botonVaciar}>
-                        <Text style={styles.textoBotonVaciar}>Vaciar carrito</Text>
-                    </TouchableOpacity>
+            </ScrollView>
+            {items.length > 0 && (
+                <View style={styles.contenedorFinalizarCompra}>
+                    <View> 
+                        <Text style={styles.textoPrincipal}>TOTAL: $ {parseFloat(totalCompra).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 3 })},00 ARS</Text>
+                    </View>
+                    <View style={styles.containerFinalizaryEliminar}>
+                      <TouchableOpacity style={styles.botonComprar}>
+                          <Text style={styles.textoBotonVaciar} onPress={handleCheckout}>Finalizar compra</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={vaciarCarrito} style={styles.botonVaciar}>
+                          <Text style={styles.textoBotonVaciar}>Vaciar carrito</Text>
+                      </TouchableOpacity>
+                    </View>
                 </View>
                 )}
-        </ScrollView>
+        </View>
     );
 }
 
@@ -179,7 +178,11 @@ export default function CarritoComponente() {
         flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgb(230, 230, 230)',
+        backgroundColor: 'white'
+    },
+    ScrollViewContainer: {
+      paddingTop:25,
+      paddingBottom:50,
     },
     item: {
         flexDirection: 'column',
@@ -188,29 +191,13 @@ export default function CarritoComponente() {
         paddingVertical: 5,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
-        width: 400,
-        height: 200
+        paddingBottom: 5,
+        width: 450,
+        height: 200,
     },
     eliminar: {
         color: 'red',
         marginTop: 8,
-    },
-    botonVaciar: {
-        backgroundColor: '#f00',
-        padding: 10,
-        borderRadius: 5,
-        margin: 10,
-    },
-    botonComprar: {
-        backgroundColor: 'green',
-        padding: 10,
-        borderRadius: 5,
-        margin: 10,
-    },
-    textoBotonVaciar: {
-        color: '#fff',
-        textAlign: 'center',
-        fontWeight: 'bold',
     },
     cantidadContainer: {
         display: 'flex',
@@ -231,4 +218,53 @@ export default function CarritoComponente() {
         fontWeight: 'bold',
         color: '#444',
     },
+    textoPrincipal: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'center'
+    },
+    textoSecundario: {
+      fontSize: 16,
+      fontWeight: 'bold',
+  },
+    contenedorFinalizarCompra: {
+      alignSelf: 'center',
+      width: 450,
+      backgroundColor: 'transparent',
+    },
+    containerFinalizaryEliminar:{
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center'
+    },
+    botonVaciar: {
+      backgroundColor: '#f00',
+      padding: 10,
+      borderRadius: 5,
+      margin: 10,
+      width: 130,
+      height: 40
+    },
+    botonComprar: {
+        backgroundColor: 'green',
+        padding: 10,
+        borderRadius: 5,
+        margin: 10,
+        width: 130
+    },
+    textoBotonVaciar: {
+        color: '#fff',
+        textAlign: 'center',
+        fontWeight: 'bold',
+    },
+    contenedorNotFound:{
+      height: 800,
+      justifyContent: 'center'
+    },
+    textoNotFound:{
+      fontSize: 22,
+      fontWeight: 'bold',
+      padding: 20,
+      textAlign: 'center'
+    }
 });
