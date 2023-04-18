@@ -1,29 +1,42 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, ImageBackground, ScrollView, Text} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { View, StyleSheet, ImageBackground, ScrollView, Text, Image} from 'react-native';
 import FormLogin from '../Components/FormLogin';
-import bg from '../../assets/cat-mates.jpg';
+import bg from '../../assets/mate-paisaje.jpg';
+import logoMatear from '../../assets/LOGO-MATEAR-NEGRO.png'
 import Title from '../Components/Title';
 import Presentation from '../Components/Presentacion';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Home() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  useEffect(() => {
+  async function getToken() {
+  const token = await AsyncStorage.getItem('token');
+  if (token) {
+  setIsLoggedIn(true);
+  }
+  }
+  getToken();
+  }, []);
 
-    return (
-        <ImageBackground source={bg} style={styles.backgroundImage}>
-          <ScrollView contentContainerStyle={styles.scrollContainer}>
-            <View style={styles.seccion}>
-              <View style={styles.texto}>
-              <Title text='Welcome To MateAr' />
-            <Presentation text='Find the best mates and related products with the best prices' />
-              </View>
+  return (
+      <ImageBackground source={bg} style={styles.backgroundImage}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.seccion}>
+            <View style={styles.texto}>
+              <Image source={logoMatear}/>
+          <Presentation text='Find the best mates and related products with the best prices' />
             </View>
+          </View>
+          {!isLoggedIn && (
             <View style={styles.seccion2}>
-              <FormLogin />
+            <FormLogin />
             </View>
-          </ScrollView>
-        </ImageBackground>
-      );
-
+            )}
+        </ScrollView>
+      </ImageBackground>
+    );
 }
 
 
@@ -51,7 +64,9 @@ const styles = StyleSheet.create({
     },
     texto: {
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'space-between',
       gap: 35,
+      height: '90%',
+      paddingTop: 80
     },
   });

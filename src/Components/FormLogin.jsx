@@ -5,15 +5,22 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BienvenidaRegister from './Wellcome';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import google from "../../assets/Google.png"
 import { Alert } from 'react-native';
+import bottomTabsActions from '../Store/Perfil/action'; 
+import detailsActions from "../Store/Logout/actions"
+
+const { mangaClicked } = detailsActions
+const { reloadBottomTabs } = bottomTabsActions
 
 export default function FormLogin() {
   const navigation = useNavigation();
   const [mail, setmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const dispatch = useDispatch();
+  let state = useSelector(store => store.bottomTabsReducer.state)
   async function handleSubmit() {
     let data = {
       mail: mail,
@@ -43,14 +50,19 @@ export default function FormLogin() {
       const storedUser = await AsyncStorage.getItem('user');
       console.log('Usuario almacenado:', storedUser);
       console.log('logueado');
-
+      dispatch(mangaClicked( {state:false} ))
+      dispatch(reloadBottomTabs({ state: false }));
+      dispatch(reloadBottomTabs({ state: !state }))
+   
       setTimeout(() => {
         setLoading(false);
-      }, 1500);
+      }, 3000);
       Alert.alert(
         'User logged in!',
+        
       );
       navigation.navigate('Home');
+      
     } catch (error) {
       console.log(error);
       Alert.alert(
@@ -96,17 +108,16 @@ export default function FormLogin() {
     
       </TouchableOpacity>
 
-      <View style={styles.divGoogle}>
+      {/* <View style={styles.divGoogle}>
         <TouchableOpacity
           style={styles.button2}
           onPress={() => {
-          
           }}
         >
           <Image style={styles.googleImg} source={google} />
           <Text style={styles.buttonText2}>Sign in with Google</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <View style={styles.parrafosForm}>
         <Text>
@@ -130,18 +141,19 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "center",
     gap: 20,
-    marginTop: 30,
+    marginTop: 0,
     width: "100%",
+    height: 980,
     backgroundColor: 'rgb(230, 230, 230)', 
   },
   fieldset: {
     display: "flex",
     alignItems: "flex-start",
     marginTop: 30,
-       width: 410,
+    width: 410,
     height: 65,
     width: "90%",
     justifyContent: "flex-start",
@@ -174,7 +186,7 @@ const styles = StyleSheet.create({
     lineHeight: 15,
     letterSpacing: 1,
     fontWeight: 500,
-    color: "white",
+    color: "black",
   },
   input: {
     width: "90%",
@@ -201,7 +213,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 60,
     marginBottom: 20,
-    width: "90%",
+    width: 400,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -221,7 +233,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 60,
     margin: 15,
-    width: "90%",
+    width: 400,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,

@@ -12,7 +12,7 @@ Presentation(props) {
 const styles = StyleSheet.create({
   parrafo: {
     color: "white",
-    fontSize: 19,
+    fontSize: 22,
     textAlign: "center",
     marginVertical: 10,
     

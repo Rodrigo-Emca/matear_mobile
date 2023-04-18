@@ -4,22 +4,29 @@ import axios from "axios";
 
 const read_all_products = createAsyncThunk(
     'read_all_products',
-    async() => {
+    async () => {
         let url = `https://matear-back.onrender.com/api/article`
-        try{
+        try {
             let response = await axios.get(url)
-            //console.log(response.data.article)
-            return{
+            return {
                 productos: response.data.article
             }
-        }catch(error){
-            return{
+        } catch (error) {
+            return {
                 productos: []
             }
         }
     }
 )
+const filter_product = createAsyncThunk(
+    'filter_product',
+    async ({ filter }) => {
+        return {
+            filter: filter
+        }
+    }
+)
 
-const actions = {read_all_products}
+const actions = { read_all_products, filter_product }
 
 export default actions

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image, TextI
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import bg from '../../assets/fondoprofile.jpg';
 import Wellcome from '../Components/Wellcome';
+import logoNegro from '../../assets/LOGO-MATEAR-NEGRO.png'
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -38,9 +39,10 @@ export default function Profile() {
   return (
     <ImageBackground source={bg} style={styles.background}>
       <View style={styles.container}>
-        <Wellcome />
+        {/* <Wellcome /> */}
         {user && !editMode ? (
           <View style={styles.userContainer}>
+            <Image source={logoNegro} style={styles.logoProfile}/>
             <Text style={styles.userTitle}>User Information:</Text>
             <Text style={styles.userText}>Name: {user.name}</Text>
             <Text style={styles.userText}>Email: {user.mail}</Text>
@@ -98,8 +100,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  logoProfile: {
+    width: 250,
+    height: 150
+  },
   userContainer: {
     alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    gap: 10,
+    padding: 45,
+    borderRadius: 15
   },
   userTitle: {
     fontSize: 25,
@@ -140,11 +150,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   editButton: {
-    fontSize: 20,
+    fontSize: 22,
     marginTop: 20,
-    color: '#C5A880',
+    backgroundColor: '#C5A880',
+    color: 'white',
     borderRadius: 5,
-    width: 50,
-     
+    width: 100,
+    height: 40,
+    textAlign: 'center',
   },
 });

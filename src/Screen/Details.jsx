@@ -1,17 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, ScrollView, SafeAreaView, Text, Image, StyleSheet, StatusBar, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Details(producto) {
     const productDetails = producto.route.params.producto;
+    const [selectedImage, setSelectedImage] = useState(productDetails?.photo?.[0]);
 
-    const [storedToken, setStoredToken] = useState(null);
-
-    useEffect(() => {
-        AsyncStorage.getItem('token').then((token) => {
-            setStoredToken(token);
-        });
-    }, []);
+    const handleClick = (index) => {
+        setSelectedImage(productDetails?.photo?.[index]);
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -20,7 +16,7 @@ export default function Details(producto) {
                     <View style={styles.imgZoomContainer}>
                         <Image
                             style={styles.mainImg}
-                            source={{ uri: productDetails?.photo?.[0] }}
+                            source={{ uri: selectedImage }}
                             alt="Main product"
                         />
                         <View style={styles.imgZoom} />
@@ -47,19 +43,12 @@ export default function Details(producto) {
                     <Text style={styles.title}>{productDetails?.product_id?.title}</Text>
                     <Text style={styles.description}>{productDetails?.product_id?.description}</Text>
                     <Text style={styles.stock}>
-                        Stock:
+                        Stock: 
                         <Text style={{ color: productDetails?.product_id?.stock < 3 ? 'red' : 'green' }}>
                             {productDetails?.product_id?.stock}
                         </Text>
                     </Text>
-                    <Text style={styles.price}>Precio: ${productDetails?.product_id?.price}</Text>
-                    <View style={styles.cantidadContainer}>
-                        {storedToken !== null && (
-                            <TouchableOpacity style={styles.btnDetail}>
-                                <Text style={styles.btnDetailText}>Agregar al carrito</Text>
-                            </TouchableOpacity>
-                        )}
-                    </View>
+                    <Text style={styles.price}>Precio: $ {parseFloat(productDetails?.product_id?.price).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 3 })},00 ARS</Text>
                     <Text style={styles.categorias}>
                         Categorias: <Text style={styles.categoria}>Mates</Text>
                     </Text>
@@ -68,6 +57,7 @@ export default function Details(producto) {
         </SafeAreaView>
     );
 }
+
 
 
 const styles = StyleSheet.create({

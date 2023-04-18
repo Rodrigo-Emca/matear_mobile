@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Register from "../Screen/Register";
 import Home from "../Screen/Home";
@@ -44,24 +43,27 @@ function ShopStack() {
 const Tab = createBottomTabNavigator();
 
 function BottomTabsNavigation() {
- 
   let state = useSelector((store) => store.bottomTabsReducer.state);
-  let [token, setToken] = useState("");
- 
-
-  useFocusEffect(
-    React.useCallback(() => {
-      async function getData() {
-        try {
-          const value = await AsyncStorage.getItem("token");
-          setToken(value);
-        } catch (error) {
-          console.log(error);
+  
+  React.useEffect(() => {
+    async function getData() {
+      try {
+        const value = await AsyncStorage.getItem("token");
+        if (value !== null) {
+          setIsLogged(true);
+        } else {
+          setIsLogged(false);
         }
+      } catch (error) {
+        console.log(error);
       }
-      getData();
-    }, [state])
-  );
+    }
+    getData();
+  }, [state]);
+  
+  const [isLogged, setIsLogged] = React.useState(false);
+  
+  
   return (
     <Tab.Navigator
       screenOptions={{
@@ -98,31 +100,39 @@ function BottomTabsNavigation() {
           ),
         }}
       />
-      <Tab.Screen
-        name="register"
-        component={Register}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Register',
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="user-circle-o" size={24} color={color} />
-          ),
-        }}
-      />
-      { token ? (<Tab.Screen name="Perfil" options={{
-            headerShown: false,
-            tabBarLabel: 'Profile',
-            tabBarIcon: ({ color }) => (
-              <FontAwesome name="user" size={24} color={color} />
-            ),
-          }}>
-            {() => (
-              <>
-                <Perfil />
-                <LogOut />
-              </>
-            )}
-          </Tab.Screen>) : (<></>)}
+     { !isLogged ? (
+  <Tab.Screen
+    name="register"
+    component={Register}
+    options={{
+      headerShown: false,
+      tabBarLabel: 'Register',
+      tabBarIcon: ({ color }) => (
+        <FontAwesome name="user-circle-o" size={24} color={color} />
+      ),
+    }}
+  />
+) : null
+}
+
+      { isLogged ? (
+  <Tab.Screen name="Perfil" options={{
+      headerShown: false,
+      tabBarLabel: 'Profile',
+      tabBarIcon: ({ color }) => (
+        <FontAwesome name="user" size={24} color={color} />
+      ),
+    }}>
+      {() => (
+        <>
+          <Perfil />
+          <LogOut />
+        </>
+      )}
+    </Tab.Screen>
+  ) : null
+}
+
       
       
        
@@ -139,7 +149,7 @@ function BottomTabsNavigation() {
         }}
       />
 
-      <Tab.Screen
+      {isLogged ? (<Tab.Screen
         name="Cart"
         component={Cart}
         options={{
@@ -149,7 +159,7 @@ function BottomTabsNavigation() {
             <FontAwesome name="shopping-cart" size={24} color={color} />
           ),
         }}
-      />
+      /> ): null}
     </Tab.Navigator>
     
   );
